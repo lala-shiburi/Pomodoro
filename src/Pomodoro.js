@@ -9,9 +9,7 @@ class App extends Component {
     return (
       <div className="App">
 
-      <Label id="break-label" text="Break Length" />
-      <Label id="session-label" text="Session Length" />
-      <Label id="break-label" text="Session" addclass="session" />
+      
       <Controllers />  
         
       </div>
