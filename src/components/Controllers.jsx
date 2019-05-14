@@ -37,26 +37,40 @@ export default class Controllers extends Component {
 
     const reset = () => {
       let intervalButton = document.getElementById("start_stop");
-      console.log(intervalButton);
+      let beep=document.getElementById('beep');
+      beep.currentTime = 0;
+      
       clearInterval(intervalButton.interval);
 
       this.setState({
-        breakLength: 5.0,
-        sessionLength: 25.0,
+        breakLength: 5,
+        sessionLength: 25,
         currentTimer: 1500,
-        timerType: "session",
+        timerType: "Session",
         timerState: "start"
       });
     };
 
     const handleClickStartStop = event => {
       if (event.target.interval && this.state.timerState === "stop") {
-        clearInterval(event.interval);
+        clearInterval(event.target.interval);
         this.setState({ timerState: "start" });
       } else {
         let count = () => {
-          this.setState({ currentTimer: this.state.currentTimer - 1 });
+          if(this.state.currentTimer === 0){
+             let beep=document.getElementById('beep');
+             let timerType = this.state.timerType === 'session' ? 'break':'session';
+             let currentTimer= this.state.timerType === 'session' ? this.state.breakLength*60 :this.state.sessionLength*60;
+             this.setState({timerType: timerType,currentTimer:currentTimer
+             })
+             beep.currentTime = 0;
+             beep.play();
+          }else{
+             this.setState({ currentTimer: this.state.currentTimer - 1 });
+          }
+         
         };
+
         event.target.interval = setInterval(count, 1000);
         this.setState({ timerState: "stop" });
       }
@@ -78,7 +92,7 @@ export default class Controllers extends Component {
         <Label id="break-length" text={this.state.breakLength} />
         <Label id="session-label" text="Session Length" />
         <Label id="session-length" text={this.state.sessionLength} />
-        <Label id="timer-label" text="Session" addclass="session" />
+        <Label id="timer-label" text={this.state.timerType} addclass="session" />
         <Label id="length-left" text={clockDisplay()} />
         <BreakIncrement handleClick={handleClickIncrement} />
         <SessionIncrement handleClick={handleClickIncrement} />
@@ -86,6 +100,7 @@ export default class Controllers extends Component {
         <SessionDecrement handleClick={handleClickDecrement} />
         <StartStop handleClick={handleClickStartStop} />
         <Reset handleClick={reset} />
+        <audio id='beep' src='https://goo.gl/65cBl1'></audio>
       </div>
     );
   }
