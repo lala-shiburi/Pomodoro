@@ -5,6 +5,7 @@ import SessionIncrement from "./SessionIncrement";
 import BreakDecrement from "./BreakDecrement";
 import SessionDecrement from "./SessionDecrement";
 import StartStop from "./StartStop";
+import Reset from "./Reset";
 
 export default class Controllers extends Component {
   state = {
@@ -16,7 +17,7 @@ export default class Controllers extends Component {
   };
 
   render() {
-    let interval;
+    
 
     const handleClickIncrement = e => {
       let controllerID = e.target.id;
@@ -36,9 +37,21 @@ export default class Controllers extends Component {
       return minutes + ':' + seconds;
     }
 
+    const reset=()=>{
+      let intervalButton= document.getElementById('start_stop');
+      console.log(intervalButton);
+      clearInterval(intervalButton.interval);
+        
+      this.setState({breakLength: 5.00,
+                      sessionLength: 25.00,
+                      currentTimer:1500,
+                      timerType:'session',
+                      timerState:'start',})
+                    }
+
     const handleClickStartStop=(event)=>{
       
-      if(event.interval && this.state.timerState === 'stop' ){
+      if(event.target.interval && this.state.timerState === 'stop' ){
         clearInterval(event.interval);
         this.setState({timerState:'start'})
         
@@ -47,7 +60,7 @@ export default class Controllers extends Component {
       let count=()=>{
         this.setState({currentTimer:this.state.currentTimer-1})
       }
-       event.interval=setInterval(count,1000)
+       event.target.interval=setInterval(count,1000)
        this.setState({timerState:'stop'})
     }
           
@@ -77,6 +90,7 @@ export default class Controllers extends Component {
         <BreakDecrement handleClick={handleClickDecrement} />
         <SessionDecrement handleClick={handleClickDecrement} />
         <StartStop handleClick={handleClickStartStop} />
+        <Reset handleClick={reset} />
       </div>
     );
   }
