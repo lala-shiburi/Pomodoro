@@ -10,24 +10,47 @@ export default class Controllers extends Component {
   state = {
     breakLength: 5.00,
     sessionLength: 25.00,
-    lengthLeft: 25.00
+    currentTimer:1500,
+    timerType:'session',
+    timerState:'start',
   };
 
   render() {
+    let interval;
+
     const handleClickIncrement = e => {
       let controllerID = e.target.id;
       if (controllerID === "break-increment") {
         this.setState({ breakLength: this.state.breakLength + 1 });
       } else {
         this.setState({ sessionLength: this.state.sessionLength + 1 });
+        this.setState({ currentTimer: this.state.currentTimer + 60 });
       }
     };
 
-    const handleClickStartStop=()=>{
-      setInterval(()=>(
-        this.setState({lengthLeft:this.state.lengthLeft-0.01})
-          ,1000)
-          )
+    const clockDisplay=()=>{
+      let minutes=Math.floor(this.state.currentTimer/60);
+      let seconds=this.state.currentTimer-minutes*60;
+      seconds = seconds < 10 ? '0' + seconds : seconds;
+      minutes = minutes < 10 ? '0' + minutes : minutes;
+      return minutes + ':' + seconds;
+    }
+
+    const handleClickStartStop=(event)=>{
+      
+      if(event.interval && this.state.timerState === 'stop' ){
+        clearInterval(event.interval);
+        this.setState({timerState:'start'})
+        
+    }else{
+      
+      let count=()=>{
+        this.setState({currentTimer:this.state.currentTimer-1})
+      }
+       event.interval=setInterval(count,1000)
+       this.setState({timerState:'stop'})
+    }
+          
     }
 
 
@@ -37,6 +60,7 @@ export default class Controllers extends Component {
         this.setState({breakLength:this.state.breakLength-1})
       }else{
         this.setState({sessionLength:this.state.sessionLength-1})
+        this.setState({ currentTimer: this.state.currentTimer - 60 });
       }
     };
 
@@ -47,7 +71,7 @@ export default class Controllers extends Component {
         <Label id="session-label" text="Session Length" />
         <Label id="session-length" text={this.state.sessionLength} />
         <Label id="timer-label" text="Session" addclass="session" />
-        <Label id="length-left" text={this.state.lengthLeft} />
+        <Label id="length-left" text={clockDisplay()} />
         <BreakIncrement handleClick={handleClickIncrement} />
         <SessionIncrement handleClick={handleClickIncrement} />
         <BreakDecrement handleClick={handleClickDecrement} />
