@@ -38,6 +38,7 @@ export default class Controllers extends Component {
     const reset = () => {
       let intervalButton = document.getElementById("start_stop");
       let beep=document.getElementById('beep');
+      beep.pause();
       beep.currentTime = 0;
       
       clearInterval(intervalButton.interval);
@@ -46,7 +47,7 @@ export default class Controllers extends Component {
         breakLength: 5,
         sessionLength: 25,
         currentTimer: 1500,
-        timerType: "Session",
+        timerType: "session",
         timerState: "start"
       });
     };
@@ -93,7 +94,7 @@ export default class Controllers extends Component {
         <Label id="session-label" text="Session Length" />
         <Label id="session-length" text={this.state.sessionLength} />
         <Label id="timer-label" text={this.state.timerType} addclass="session" />
-        <Label id="length-left" text={clockDisplay()} />
+        <Label id="time-left" text={clockDisplay()} />
         <BreakIncrement handleClick={handleClickIncrement} />
         <SessionIncrement handleClick={handleClickIncrement} />
         <BreakDecrement handleClick={handleClickDecrement} />
