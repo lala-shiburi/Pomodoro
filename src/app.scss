@@ -1,0 +1,30 @@
+
+.app {
+    text-align: center;
+    .pomodoro {
+        background: yellow;
+        max-width: 380px;
+
+        .sessionLength,.breakLength {
+            display: flex;
+            flex-direction: column;
+
+            .controllers {
+                display: flex;
+                justify-content: center;
+
+                
+            }
+        }
+
+    .controller {
+                    cursor: pointer;
+                    svg {
+                        pointer-events: none;
+                    }
+                    &.down {
+                        transform: rotate(180deg);
+                    }
+                }
+    }
+}
