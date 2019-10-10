@@ -98,7 +98,7 @@ export default class Controllers extends Component {
 
 		return (
 			<div className="pomodoro">
-				<h4>Pomodoro</h4>
+				<p className="heading">Pomodoro</p>
 				<Label
 					id="timer-label"
 					text={this.state.timerType}
@@ -109,23 +109,26 @@ export default class Controllers extends Component {
 				<div className="sessionLength">
 					<Label id="session-label" text="Session Length" />
 					<div className="controllers">
-						<SessionIncrement handleClick={handleClickIncrement} />
-						<Label id="session-length" text={this.state.sessionLength} />
 						<SessionDecrement handleClick={handleClickDecrement} />
+						<Label id="session-length" text={this.state.sessionLength} />
+						<SessionIncrement handleClick={handleClickIncrement} />
 					</div>
 				</div>
 
 				<div className="breakLength">
 					<Label id="break-label" text="Break Length" />
 					<div className="controllers">
-						<BreakIncrement handleClick={handleClickIncrement} />
-						<Label id="break-length" text={this.state.breakLength} />
 						<BreakDecrement handleClick={handleClickDecrement} />
+						<Label id="break-length" text={this.state.breakLength} />
+						<BreakIncrement handleClick={handleClickIncrement} />
 					</div>
 				</div>
 
-				<div className="buttonContainers">
-					<StartStop handleClick={handleClickStartStop} />
+				<div className="mainControllerContainer">
+					<StartStop
+						timerState={this.state.timerState}
+						handleClick={handleClickStartStop}
+					/>
 					<Reset handleClick={reset} />
 					<audio id="beep" src="https://goo.gl/65cBl1"></audio>
 				</div>
